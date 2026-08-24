@@ -14,8 +14,56 @@ API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 SOURCE_CHANNEL = os.getenv("SOURCE_CHANNEL")
 
+import re
+from shared import PENDING_HUMO_PAYMENTS
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 # Session file will be created in the current directory
 client = TelegramClient('userbot_session', API_ID, API_HASH)
+
+@client.on(events.NewMessage(chats='HUMOcardbot'))
+async def humo_payment_handler(event):
+    message_text = event.message.message
+    if not message_text:
+        return
+        
+    print(f"Humo bot message: {message_text}")
+    # Example: ➕ 30.123,00 UZS
+    match = re.search(r"➕\s*([\d\.,]+)\s*UZS", message_text)
+    if match:
+        amount_str = match.group(1).replace(".", "").replace(",", "")
+        # If it includes 2 decimal zeros for tiyin, e.g., 3012300, divide by 100
+        # Actually in 30.123,00 the length after comma is 2
+        try:
+            # Let's cleanly parse 30.123,00 -> 30123
+            # Match group 1 is '30.123,00'
+            clean_str = match.group(1).replace(".", "")
+            if "," in clean_str:
+                amount = int(clean_str.split(",")[0])
+            else:
+                amount = int(clean_str)
+        except Exception as e:
+            print("Could not parse amount", e)
+            return
+            
+        print(f"Detected payment of {amount} UZS")
+        if amount in PENDING_HUMO_PAYMENTS:
+            payment_info = PENDING_HUMO_PAYMENTS.pop(amount)
+            user_id = payment_info["user_id"]
+            add_url = payment_info["add_url"]
+            ui_lang = payment_info["ui_lang"]
+            
+            msg = f"✅ **Payment Received!** ({amount:,} UZS)\n\nYour subscription is now active for 1 month. Click the button below to add Insider Finance to your group or channel."
+            
+            kb = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="➕ Add to Group/Channel", url=add_url)],
+                [InlineKeyboardButton(text="🔙 Back to Main", callback_data=f"lang_{ui_lang}")]
+            ])
+            try:
+                await bot.send_message(chat_id=user_id, text=msg, reply_markup=kb, parse_mode="Markdown")
+                print(f"Successfully activated subscription for user {user_id}")
+            except Exception as e:
+                print(f"Failed to notify user {user_id}: {e}")
 
 @client.on(events.NewMessage(chats=SOURCE_CHANNEL))
 async def new_message_handler(event):

@@ -354,6 +354,9 @@ async def show_payment_options(callback: types.CallbackQuery):
     kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_ton], [btn_uzcard], [btn_back]])
     await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
 
+import random
+from shared import PENDING_HUMO_PAYMENTS
+
 @dp.callback_query(F.data.startswith("payproc_"))
 async def process_payment(callback: types.CallbackQuery):
     parts = callback.data.split("_")
@@ -362,6 +365,7 @@ async def process_payment(callback: types.CallbackQuery):
     ui_lang = parts[3]
     method = parts[4]
     msg_id = callback.message.message_id
+    user_id = callback.from_user.id
     
     global BOT_USERNAME
     if not BOT_USERNAME:
@@ -375,12 +379,39 @@ async def process_payment(callback: types.CallbackQuery):
     else:
         add_url = f"https://t.me/{BOT_USERNAME}?startchannel={payload}&admin=post_messages"
         
-    msg = f"✅ **Payment Successful!** ({method.upper()})\n\nYour subscription is now active for 1 month. Click the button below to add Insider Finance to your group or channel."
-    btn_add = types.InlineKeyboardButton(text="➕ Add to Group/Channel", url=add_url)
-    btn_back = types.InlineKeyboardButton(text="🔙 Back to Main", callback_data=f"lang_{ui_lang}")
-    
-    kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_add], [btn_back]])
-    await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
+    if method == "uzcard":
+        # Generate a unique price like 30,123 UZS
+        unique_amount = 30000 + random.randint(1, 999)
+        
+        # Save to memory
+        PENDING_HUMO_PAYMENTS[unique_amount] = {
+            "chat_type": chat_type,
+            "sel_str": sel_str,
+            "ui_lang": ui_lang,
+            "msg_id": msg_id,
+            "user_id": user_id,
+            "add_url": add_url
+        }
+        
+        msg = (
+            f"💳 **Uzcard / Humo Payment**\n\n"
+            f"Please transfer EXACTLY **{unique_amount:,} UZS** to the following card:\n\n"
+            f"💳 Card Number: `8600 1234 5678 9012`\n"
+            f"👤 Name: `A. Xalimov`\n\n"
+            f"⚠️ *Important: You must transfer the exact amount down to the last tiyin for our system to verify it automatically.*\n\n"
+            f"⏳ Waiting for payment... (The system will automatically detect when the money arrives and send you the link.)"
+        )
+        btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")
+        kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_back]])
+        await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
+    else:
+        # Placeholder for TON payment
+        msg = f"✅ **Payment Successful!** ({method.upper()})\n\nYour subscription is now active for 1 month. Click the button below to add Insider Finance to your group or channel."
+        btn_add = types.InlineKeyboardButton(text="➕ Add to Group/Channel", url=add_url)
+        btn_back = types.InlineKeyboardButton(text="🔙 Back to Main", callback_data=f"lang_{ui_lang}")
+        
+        kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_add], [btn_back]])
+        await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
 
 @dp.message(Command("subscribe"))
 async def subscribe_group(message: types.Message):
