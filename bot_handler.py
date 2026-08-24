@@ -396,7 +396,7 @@ async def process_payment(callback: types.CallbackQuery):
         msg = (
             f"💳 **Uzcard / Humo Payment**\n\n"
             f"Please transfer EXACTLY **{unique_amount:,} UZS** to the following card:\n\n"
-            f"💳 Card Number: `8600 1234 5678 9012`\n"
+            f"💳 Card Number: `9860 0366 7710 9930`\n"
             f"👤 Name: `A. Xalimov`\n\n"
             f"⚠️ *Important: You must transfer the exact amount down to the last tiyin for our system to verify it automatically.*\n\n"
             f"⏳ Waiting for payment... (The system will automatically detect when the money arrives and send you the link.)"
