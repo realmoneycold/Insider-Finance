@@ -64,11 +64,14 @@ async def humo_payment_handler(event):
             except Exception as e:
                 print(f"Failed to record payment in database: {e}")
             
-            msg = f"✅ **Payment Received!** ({amount:,} UZS)\n\nYour subscription is now active for 1 month. Click the button below to add Insider Finance to your group or channel."
+            from translations import UI_TRANSLATIONS
+            t = UI_TRANSLATIONS.get(ui_lang, UI_TRANSLATIONS["en"])
+            
+            msg = t["pay_success"]
             
             kb = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="➕ Add to Group/Channel", url=add_url)],
-                [InlineKeyboardButton(text="🔙 Back to Main", callback_data=f"lang_{ui_lang}")]
+                [InlineKeyboardButton(text=t["btn_add_chat"], url=add_url)],
+                [InlineKeyboardButton(text=t["btn_back_main"], callback_data=f"lang_{ui_lang}")]
             ])
             try:
                 await bot.send_message(chat_id=user_id, text=msg, reply_markup=kb, parse_mode="Markdown")

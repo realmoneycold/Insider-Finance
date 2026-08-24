@@ -17,108 +17,7 @@ dp = Dispatcher()
 
 BOT_USERNAME = None
 
-UI_TRANSLATIONS = {
-    "en": {
-        "text": (
-            "📊 **About Insider Finance**\n\n"
-            "Insider Finance is an institutional-grade financial news terminal. We deliver real-time market news, "
-            "breaking updates, economic events, and vital trading signals.\n\n"
-            "This bot is specifically designed to be added to your trading **Groups and Channels**. "
-            "Once added, it will automatically broadcast all critical market intelligence directly to your community in your preferred language!\n\n"
-            "👇 Click below to configure and add the bot to your community or join our official channel:"
-        ),
-        "btn_group": "➕ Add to Group",
-        "btn_chan": "➕ Add to Channel",
-        "btn_official": "📢 Official Channel",
-        "select_langs": "👇 **Please select ALL the languages you want the news to be translated into for your group/channel:**",
-        "btn_add_final": "✅ Continue & Add Bot",
-        "connected_success": "✅ **Successfully Connected!**\n\nInsider Finance has been successfully added to your group/channel. You will now receive automated broadcasts.",
-        "btn_back_main": "🔙 Back to Main"
-    },
-    "ru": {
-        "text": (
-            "📊 **О Insider Finance**\n\n"
-            "Insider Finance — это финансовый новостной терминал институционального уровня. Мы предоставляем рыночные новости в реальном времени, "
-            "срочные обновления, экономические события и важные торговые сигналы.\n\n"
-            "Этот бот специально разработан для добавления в ваши торговые **Группы и Каналы**. "
-            "После добавления он будет автоматически транслировать всю критически важную рыночную информацию прямо в ваше сообщество!\n\n"
-            "👇 Нажмите ниже, чтобы настроить и добавить бота в свое сообщество или присоединиться к нашему официальному каналу:"
-        ),
-        "btn_group": "➕ Добавить в Группу",
-        "btn_chan": "➕ Добавить в Канал",
-        "btn_official": "📢 Официальный Канал",
-        "select_langs": "👇 **Пожалуйста, выберите ВСЕ языки, на которые вы хотите переводить новости для вашей группы/канала:**",
-        "btn_add_final": "✅ Продолжить и Добавить",
-        "connected_success": "✅ **Успешно подключено!**\n\nInsider Finance был успешно добавлен в вашу группу/канал. Теперь вы будете получать автоматические трансляции.",
-        "btn_back_main": "🔙 На главную"
-    },
-    "es": {
-        "text": (
-            "📊 **Sobre Insider Finance**\n\n"
-            "Insider Finance es un terminal de noticias financieras de nivel institucional. Ofrecemos noticias del mercado en tiempo real, "
-            "actualizaciones de última hora, eventos económicos y señales comerciales vitales.\n\n"
-            "Este bot está diseñado específicamente para ser agregado a tus **Grupos y Canales** de trading. "
-            "Una vez agregado, transmitirá automáticamente toda la inteligencia de mercado crítica directamente a tu comunidad.\n\n"
-            "👇 Haz clic abajo para configurar y agregar el bot a tu comunidad o unirte a nuestro canal oficial:"
-        ),
-        "btn_group": "➕ Añadir al Grupo",
-        "btn_chan": "➕ Añadir al Canal",
-        "btn_official": "📢 Canal Oficial",
-        "select_langs": "👇 **Por favor, selecciona TODOS los idiomas a los que deseas traducir las noticias para tu grupo/canal:**",
-        "btn_add_final": "✅ Continuar y Añadir Bot",
-        "connected_success": "✅ **¡Conectado con éxito!**\n\nInsider Finance se ha agregado correctamente a tu grupo/canal. Ahora recibirás transmisiones automáticas.",
-        "btn_back_main": "🔙 Volver al inicio"
-    },
-    "uz": {
-        "text": (
-            "📊 **Insider Finance haqida**\n\n"
-            "Insider Finance - bu professional darajadagi moliyaviy yangiliklar terminali. Biz real vaqt rejimida bozor yangiliklari, "
-            "so'nggi xabarlar, iqtisodiy voqealar va muhim savdo signallarini yetkazib beramiz.\n\n"
-            "Ushbu bot sizning savdo **Guruhlaringiz va Kanallaringizga** qo'shish uchun maxsus ishlab chiqilgan. "
-            "Qo'shilgandan so'ng, u avtomatik ravishda barcha muhim bozor ma'lumotlarini to'g'ridan-to'g'ri hamjamiyatingizga uzatadi!\n\n"
-            "👇 Botni sozlash va hamjamiyatingizga qo'shish yoki rasmiy kanalimizga qo'shilish uchun quyidagi tugmalarni bosing:"
-        ),
-        "btn_group": "➕ Guruhga qo'shish",
-        "btn_chan": "➕ Kanalga qo'shish",
-        "btn_official": "📢 Rasmiy Kanal",
-        "select_langs": "👇 **Iltimos, guruhingiz/kanalingiz uchun yangiliklar tarjima qilinishini xohlagan BARCHA tillarni tanlang:**",
-        "btn_add_final": "✅ Davom etish va Qo'shish",
-        "connected_success": "✅ **Muvaffaqiyatli ulandi!**\n\nInsider Finance guruhingiz/kanalingizga muvaffaqiyatli qo'shildi. Endi siz avtomatik tarzda yangiliklarni qabul qilasiz.",
-        "btn_back_main": "🔙 Asosiyga qaytish"
-    },
-    "tr": {
-        "text": (
-            "📊 **Insider Finance Hakkında**\n\n"
-            "Insider Finance, kurumsal düzeyde bir finansal haber terminalidir. Gerçek zamanlı piyasa haberleri, "
-            "son dakika güncellemeleri, ekonomik etkinlikler ve hayati ticaret sinyalleri sunuyoruz.\n\n"
-            "Bu bot, ticaret **Grup ve Kanallarınıza** eklenmek üzere özel olarak tasarlanmıştır. "
-            "Eklendikten sonra, tüm kritik piyasa istihbaratını otomatik olarak doğrudan topluluğunuza yayınlayacaktır!\n\n"
-            "👇 Botu yapılandırmak ve topluluğunuza eklemek veya resmi kanalımıza katılmak için aşağıya tıklayın:"
-        ),
-        "btn_group": "➕ Gruba Ekle",
-        "btn_chan": "➕ Kanala Ekle",
-        "btn_official": "📢 Resmi Kanal",
-        "select_langs": "👇 **Lütfen grubunuz/kanalınız için haberlerin çevrilmesini istediğiniz TÜM dilleri seçin:**",
-        "btn_add_final": "✅ Devam Et ve Ekle",
-        "connected_success": "✅ **Başarıyla Bağlandı!**\n\nInsider Finance grubunuza/kanalınıza başarıyla eklendi. Artık otomatik yayınlar alacaksınız.",
-        "btn_back_main": "🔙 Ana Menüye Dön"
-    },
-    "zh-cn": {
-        "text": (
-            "📊 **关于 Insider Finance**\n\n"
-            "Insider Finance 是一个机构级的金融新闻终端。我们提供实时市场新闻、突发事件更新、经济事件和重要的交易信号。\n\n"
-            "此机器人专为添加到您的交易 **群组和频道** 而设计。添加后，它将自动将所有关键的市场情报直接广播给您的社区！\n\n"
-            "👇 点击下方配置并将机器人添加到您的社区或加入我们的官方频道："
-        ),
-        "btn_group": "➕ 添加到群组",
-        "btn_chan": "➕ 添加到频道",
-        "btn_official": "📢 官方频道",
-        "select_langs": "👇 **请选择您希望新闻为您群组/频道翻译的所有语言：**",
-        "btn_add_final": "✅ 继续并添加机器人",
-        "connected_success": "✅ **连接成功！**\n\nInsider Finance 已成功添加到您的群组/频道。您现在将接收自动广播。",
-        "btn_back_main": "🔙 返回主菜单"
-    }
-}
+from translations import UI_TRANSLATIONS
 
 def get_language_keyboard():
     keyboard = [
@@ -176,9 +75,9 @@ def get_multi_lang_keyboard(chat_type: str, selected_langs: list, ui_lang: str, 
             "ui_lang": ui_lang
         }
         
-        inline_kb.append([types.InlineKeyboardButton(text="💳 Continue to Payment", callback_data=f"payopt_{chat_type}_{sel_str}_{ui_lang}")])
+        inline_kb.append([types.InlineKeyboardButton(text=t["btn_continue_pay"], callback_data=f"payopt_{chat_type}_{sel_str}_{ui_lang}")])
     
-    inline_kb.append([types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")])
+    inline_kb.append([types.InlineKeyboardButton(text=t["btn_back"], callback_data=f"lang_{ui_lang}")])
     return types.InlineKeyboardMarkup(inline_keyboard=inline_kb)
 
 @dp.message(CommandStart())
@@ -344,12 +243,12 @@ async def show_payment_options(callback: types.CallbackQuery):
     chat_type = parts[1]
     sel_str = parts[2]
     ui_lang = parts[3]
+    t = UI_TRANSLATIONS.get(ui_lang, UI_TRANSLATIONS["en"])
+    msg = t["checkout_msg"]
     
-    msg = "💰 **Subscription Checkout**\n\nPlan: Monthly Access ($30/mo)\nFeatures: Real-time News, Multi-language Translation.\n\nPlease select your payment method:"
-    
-    btn_ton = types.InlineKeyboardButton(text="💎 Pay with TON", callback_data=f"payproc_{chat_type}_{sel_str}_{ui_lang}_ton")
-    btn_uzcard = types.InlineKeyboardButton(text="💳 Pay with Uzcard/Humo", callback_data=f"payproc_{chat_type}_{sel_str}_{ui_lang}_uzcard")
-    btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"tgl:{chat_type}:none:{sel_str}:{ui_lang}:{callback.message.message_id}")
+    btn_ton = types.InlineKeyboardButton(text=t["btn_pay_ton"], callback_data=f"payproc_{chat_type}_{sel_str}_{ui_lang}_ton")
+    btn_uzcard = types.InlineKeyboardButton(text=t["btn_pay_uzcard"], callback_data=f"payproc_{chat_type}_{sel_str}_{ui_lang}_uzcard")
+    btn_back = types.InlineKeyboardButton(text=t["btn_back"], callback_data=f"tgl:{chat_type}:none:{sel_str}:{ui_lang}:{callback.message.message_id}")
     
     kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_ton], [btn_uzcard], [btn_back]])
     await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
@@ -393,16 +292,10 @@ async def process_payment(callback: types.CallbackQuery):
             "add_url": add_url
         }
         
-        msg = (
-            f"💳 **Uzcard / Humo Payment**\n\n"
-            f"🛑 **STOP! TRANSFER EXACTLY THIS AMOUNT:** 🛑\n"
-            f"💰 `{unique_amount:,}` UZS 💰\n\n"
-            f"💳 Card Number: `9860 0366 7710 9930`\n"
-            f"👤 Name: `A. Xalimov`\n\n"
-            f"⚠️ *Important: Do NOT round up! You must transfer the exact amount down to the last tiyin for our system to instantly activate your subscription.*\n\n"
-            f"⏳ Waiting for payment... (The system will automatically detect when the money arrives and send you the link.)"
-        )
-        btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")
+        t = UI_TRANSLATIONS.get(ui_lang, UI_TRANSLATIONS["en"])
+        msg = t["uzcard_msg"].format(amount=f"{unique_amount:,}")
+        
+        btn_back = types.InlineKeyboardButton(text=t["btn_back"], callback_data=f"lang_{ui_lang}")
         kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_back]])
         await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
     elif method == "ton":
@@ -420,16 +313,10 @@ async def process_payment(callback: types.CallbackQuery):
             "amount": price_ton
         }
         
-        msg = (
-            f"💎 **TON Blockchain Payment**\n\n"
-            f"Please transfer EXACTLY **{price_ton} TON** to the following wallet:\n\n"
-            f"💎 Wallet Address:\n`UQCyX_cds5H0YnciaKaiWw7N3hfsLmpbOES851PUqbqkqHBR`\n\n"
-            f"🛑 **CRITICAL: You MUST include this exactly in the Comment / Memo field:**\n"
-            f"📝 Memo: `{unique_memo}`\n\n"
-            f"⚠️ *If you forget the Memo, the system will not be able to identify your payment!*\n\n"
-            f"⏳ Scanning the blockchain... (Your link will be sent automatically once the transaction is confirmed)"
-        )
-        btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")
+        t = UI_TRANSLATIONS.get(ui_lang, UI_TRANSLATIONS["en"])
+        msg = t["ton_msg"].format(amount=price_ton, memo=unique_memo)
+        
+        btn_back = types.InlineKeyboardButton(text=t["btn_back"], callback_data=f"lang_{ui_lang}")
         kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_back]])
         await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
 
