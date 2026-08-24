@@ -280,7 +280,7 @@ async def process_payment(callback: types.CallbackQuery):
         
     if method == "uzcard":
         # Generate a unique price like 30,123 UZS
-        unique_amount = 30000 + random.randint(1, 999)
+        unique_amount = 133000 + random.randint(1, 999)
         
         # Save to memory
         PENDING_HUMO_PAYMENTS[unique_amount] = {
