@@ -405,13 +405,32 @@ async def process_payment(callback: types.CallbackQuery):
         btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")
         kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_back]])
         await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
-    else:
-        # Placeholder for TON payment
-        msg = f"✅ **Payment Successful!** ({method.upper()})\n\nYour subscription is now active for 1 month. Click the button below to add Insider Finance to your group or channel."
-        btn_add = types.InlineKeyboardButton(text="➕ Add to Group/Channel", url=add_url)
-        btn_back = types.InlineKeyboardButton(text="🔙 Back to Main", callback_data=f"lang_{ui_lang}")
+    elif method == "ton":
+        unique_memo = f"IF-{random.randint(10000, 99999)}"
+        price_ton = 5.0 # Let's say 5 TON for a month
         
-        kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_add], [btn_back]])
+        from shared import PENDING_TON_PAYMENTS
+        PENDING_TON_PAYMENTS[unique_memo] = {
+            "chat_type": chat_type,
+            "sel_str": sel_str,
+            "ui_lang": ui_lang,
+            "msg_id": msg_id,
+            "user_id": user_id,
+            "add_url": add_url,
+            "amount": price_ton
+        }
+        
+        msg = (
+            f"💎 **TON Blockchain Payment**\n\n"
+            f"Please transfer EXACTLY **{price_ton} TON** to the following wallet:\n\n"
+            f"💎 Wallet Address:\n`UQCyX_cds5H0YnciaKaiWw7N3hfsLmpbOES851PUqbqkqHBR`\n\n"
+            f"🛑 **CRITICAL: You MUST include this exactly in the Comment / Memo field:**\n"
+            f"📝 Memo: `{unique_memo}`\n\n"
+            f"⚠️ *If you forget the Memo, the system will not be able to identify your payment!*\n\n"
+            f"⏳ Scanning the blockchain... (Your link will be sent automatically once the transaction is confirmed)"
+        )
+        btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")
+        kb = types.InlineKeyboardMarkup(inline_keyboard=[[btn_back]])
         await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
 
 @dp.message(Command("subscribe"))

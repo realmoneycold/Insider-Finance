@@ -36,6 +36,10 @@ async def on_startup():
         
     print("Starting TELETHON Userbot (Listener)...")
     asyncio.create_task(start_listener())
+    
+    from ton_scanner import scan_ton_blockchain
+    print("Starting TON Blockchain Scanner...")
+    asyncio.create_task(scan_ton_blockchain())
 
 @dp.shutdown()
 async def on_shutdown():

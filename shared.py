@@ -1,2 +1,3 @@
 # shared.py
 PENDING_HUMO_PAYMENTS = {}
+PENDING_TON_PAYMENTS = {}
