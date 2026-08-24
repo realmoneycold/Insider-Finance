@@ -85,6 +85,24 @@ async def new_message_handler(event):
     if not message_text:
         return # Skip media without text for now
         
+    # ANTI-AD / SPAM FILTER
+    blocked_keywords = [
+        "weekly results",
+        "srosh mayi",
+        "@sroshmayi",
+        "premium signals",
+        "secure your access",
+        "quadrupled",
+        "if you aren't in the",
+        "sroshmayi_bot"
+    ]
+    
+    message_lower = message_text.lower()
+    for keyword in blocked_keywords:
+        if keyword in message_lower:
+            print(f"🛑 Blocked promotional message containing: '{keyword}'")
+            return
+            
     print(f"New news received: {message_text[:50]}...")
     
     async with AsyncSessionLocal() as session:
