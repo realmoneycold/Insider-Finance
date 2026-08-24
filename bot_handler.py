@@ -344,6 +344,27 @@ from datetime import datetime, timedelta
 
 @dp.my_chat_member(ChatMemberUpdatedFilter(member_status_changed=IS_NOT_MEMBER >> ADMINISTRATOR))
 async def channel_added(event: ChatMemberUpdated):
+    chat_username = event.chat.username
+    if chat_username and chat_username.lower() == "insiderfinance_org":
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(select(Subscription).where(Subscription.group_id == str(event.chat.id)))
+            sub = result.scalars().first()
+            if not sub:
+                sub = Subscription(
+                    group_id=str(event.chat.id),
+                    group_name=event.chat.title,
+                    target_language="en",
+                    is_active=True,
+                    status="active",
+                    expiry_date=datetime.datetime.utcnow() + datetime.timedelta(days=3650) # 10 years
+                )
+                session.add(sub)
+            else:
+                sub.status = "active"
+                sub.is_active = True
+            await session.commit()
+        return
+
     if event.chat.type != "channel":
         # Group manual add
         if event.from_user.id not in PENDING_CHANNEL_SETUPS:

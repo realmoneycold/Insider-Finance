@@ -15,6 +15,8 @@ API_HASH = os.getenv("API_HASH")
 SOURCE_CHANNEL = os.getenv("SOURCE_CHANNEL")
 
 import re
+from aiogram.types import FSInputFile
+import os
 from shared import PENDING_HUMO_PAYMENTS
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -117,6 +119,11 @@ async def new_message_handler(event):
         if not subs:
             return
 
+        media_path = None
+        if event.message.media and event.message.photo:
+            os.makedirs("temp_media", exist_ok=True)
+            media_path = await event.message.download_media(file="temp_media/")
+
         # 1. Gather all unique languages required
         needed_langs = set()
         for sub in subs:
@@ -146,12 +153,23 @@ async def new_message_handler(event):
                     
                 if combined_parts:
                     final_message = "\n\n".join(combined_parts)
-                    await bot.send_message(chat_id=sub.group_id, text=final_message, parse_mode="Markdown")
+                    if media_path and event.message.photo:
+                        try:
+                            photo = FSInputFile(media_path)
+                            await bot.send_photo(chat_id=sub.group_id, photo=photo, caption=final_message[:1000], parse_mode="Markdown")
+                        except Exception as photo_e:
+                            print(f"Could not send photo: {photo_e}")
+                            await bot.send_message(chat_id=sub.group_id, text=final_message, parse_mode="Markdown")
+                    else:
+                        await bot.send_message(chat_id=sub.group_id, text=final_message, parse_mode="Markdown")
                     print(f"✅ Sent combined broadcast to {sub.group_name}")
                     await asyncio.sleep(1.0) # Prevent Telegram API rate limits
                 
             except Exception as e:
                 print(f"❌ Failed to send to {sub.group_name}: {e}")
+                
+        if media_path and os.path.exists(media_path):
+            os.remove(media_path)
 
 async def start_listener():
     await client.start()
