@@ -300,7 +300,7 @@ async def process_payment(callback: types.CallbackQuery):
         await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
     elif method == "ton":
         unique_memo = f"IF-{random.randint(10000, 99999)}"
-        price_ton = 5.0 # Let's say 5 TON for a month
+        price_ton = 2.0 # Let's say 5 TON for a month
         
         from shared import PENDING_TON_PAYMENTS
         PENDING_TON_PAYMENTS[unique_memo] = {
