@@ -21,6 +21,8 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 # Session file will be created in the current directory
 client = TelegramClient('userbot_session', API_ID, API_HASH)
 
+from models import Subscription, PaymentHistory
+
 @client.on(events.NewMessage(chats='HUMOcardbot'))
 async def humo_payment_handler(event):
     message_text = event.message.message
@@ -32,11 +34,7 @@ async def humo_payment_handler(event):
     match = re.search(r"➕\s*([\d\.,]+)\s*UZS", message_text)
     if match:
         amount_str = match.group(1).replace(".", "").replace(",", "")
-        # If it includes 2 decimal zeros for tiyin, e.g., 3012300, divide by 100
-        # Actually in 30.123,00 the length after comma is 2
         try:
-            # Let's cleanly parse 30.123,00 -> 30123
-            # Match group 1 is '30.123,00'
             clean_str = match.group(1).replace(".", "")
             if "," in clean_str:
                 amount = int(clean_str.split(",")[0])
@@ -52,6 +50,19 @@ async def humo_payment_handler(event):
             user_id = payment_info["user_id"]
             add_url = payment_info["add_url"]
             ui_lang = payment_info["ui_lang"]
+            
+            # Record payment in database!
+            try:
+                async with AsyncSessionLocal() as session:
+                    new_payment = PaymentHistory(
+                        user_id=str(user_id),
+                        amount=amount,
+                        payment_method="humo"
+                    )
+                    session.add(new_payment)
+                    await session.commit()
+            except Exception as e:
+                print(f"Failed to record payment in database: {e}")
             
             msg = f"✅ **Payment Received!** ({amount:,} UZS)\n\nYour subscription is now active for 1 month. Click the button below to add Insider Finance to your group or channel."
             

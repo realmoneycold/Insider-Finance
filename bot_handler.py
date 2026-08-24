@@ -395,10 +395,11 @@ async def process_payment(callback: types.CallbackQuery):
         
         msg = (
             f"💳 **Uzcard / Humo Payment**\n\n"
-            f"Please transfer EXACTLY **{unique_amount:,} UZS** to the following card:\n\n"
+            f"🛑 **STOP! TRANSFER EXACTLY THIS AMOUNT:** 🛑\n"
+            f"💰 `{unique_amount:,}` UZS 💰\n\n"
             f"💳 Card Number: `9860 0366 7710 9930`\n"
             f"👤 Name: `A. Xalimov`\n\n"
-            f"⚠️ *Important: You must transfer the exact amount down to the last tiyin for our system to verify it automatically.*\n\n"
+            f"⚠️ *Important: Do NOT round up! You must transfer the exact amount down to the last tiyin for our system to instantly activate your subscription.*\n\n"
             f"⏳ Waiting for payment... (The system will automatically detect when the money arrives and send you the link.)"
         )
         btn_back = types.InlineKeyboardButton(text="🔙 Back", callback_data=f"lang_{ui_lang}")

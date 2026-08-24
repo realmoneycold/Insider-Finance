@@ -14,3 +14,13 @@ class Subscription(Base):
     expiry_date = Column(DateTime, nullable=True)
     status = Column(String, default="unpaid") # unpaid, active, expired
     payment_method = Column(String, nullable=True) # ton, uzcard
+
+class PaymentHistory(Base):
+    __tablename__ = "payment_history"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(String, index=True) # Telegram User ID who paid
+    amount = Column(Integer)
+    currency = Column(String, default="UZS")
+    payment_method = Column(String)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
