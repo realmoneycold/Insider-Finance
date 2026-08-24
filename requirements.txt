@@ -1,0 +1,6 @@
+aiogram==3.4.1
+Telethon==1.33.1
+SQLAlchemy==2.0.25
+asyncpg==0.29.0
+python-dotenv==1.0.1
+deep-translator==1.11.4
