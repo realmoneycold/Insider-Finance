@@ -156,7 +156,10 @@ async def new_message_handler(event):
                     if media_path and event.message.photo:
                         try:
                             photo = FSInputFile(media_path)
-                            await bot.send_photo(chat_id=sub.group_id, photo=photo, caption=final_message[:1000], parse_mode="Markdown")
+                            # Send photo first without caption to avoid 1024 char limit
+                            await bot.send_photo(chat_id=sub.group_id, photo=photo)
+                            # Then send the full translated text
+                            await bot.send_message(chat_id=sub.group_id, text=final_message, parse_mode="Markdown")
                         except Exception as photo_e:
                             print(f"Could not send photo: {photo_e}")
                             await bot.send_message(chat_id=sub.group_id, text=final_message, parse_mode="Markdown")
